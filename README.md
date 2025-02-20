@@ -499,7 +499,7 @@ mlookup :: Ord k => k -> Map k v -> Maybe v
 **Example:**
 ```haskell
 >>> mlookup 1 (Branch (2,'a') (Branch (1,'b') Leaf Leaf) (Branch (3,'c') Leaf Leaf))
-Just 'a'
+Just 'b'
 >>> mlookup 'a' Leaf
 Nothing
 ```
@@ -520,7 +520,7 @@ minsert :: Ord k => k -> v -> Map k v -> Map k v
 >>> minsert 0 'd' (Branch (2,'a') (Branch (1,'b') Leaf Leaf) (Branch (3,'c') Leaf Leaf))
 Branch (2,'a') (Branch (1,'b') (Branch (0,'d') Leaf Leaf) Leaf) (Branch (3,'c') Leaf Leaf)
 >>> minsert 1 'X' (Branch (2,'a') (Branch (1,'b') Leaf Leaf) (Branch (3,'c') Leaf Leaf))
-Branch (2,'a') (Branch (1,'X') Leaf Leaf) (Branch (3,'c' Leaf Leaf)
+Branch (2,'a') (Branch (1,'X') Leaf Leaf) (Branch (3,'c') Leaf Leaf)
 >>> minsert 1 'X' Leaf
 Branch (1,'X') Leaf Leaf
 ```
