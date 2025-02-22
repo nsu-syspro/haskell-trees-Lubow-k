@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/eAMmJRRU)
 # Haskell: Trees
 
 <img alt="points bar" align="right" height="36" src="../../blob/badges/.github/badges/points-bar.svg" />
@@ -498,7 +499,7 @@ mlookup :: Ord k => k -> Map k v -> Maybe v
 **Example:**
 ```haskell
 >>> mlookup 1 (Branch (2,'a') (Branch (1,'b') Leaf Leaf) (Branch (3,'c') Leaf Leaf))
-Just 'a'
+Just 'b'
 >>> mlookup 'a' Leaf
 Nothing
 ```
@@ -519,7 +520,7 @@ minsert :: Ord k => k -> v -> Map k v -> Map k v
 >>> minsert 0 'd' (Branch (2,'a') (Branch (1,'b') Leaf Leaf) (Branch (3,'c') Leaf Leaf))
 Branch (2,'a') (Branch (1,'b') (Branch (0,'d') Leaf Leaf) Leaf) (Branch (3,'c') Leaf Leaf)
 >>> minsert 1 'X' (Branch (2,'a') (Branch (1,'b') Leaf Leaf) (Branch (3,'c') Leaf Leaf))
-Branch (2,'a') (Branch (1,'X') Leaf Leaf) (Branch (3,'c' Leaf Leaf)
+Branch (2,'a') (Branch (1,'X') Leaf Leaf) (Branch (3,'c') Leaf Leaf)
 >>> minsert 1 'X' Leaf
 Branch (1,'X') Leaf Leaf
 ```
