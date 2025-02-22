@@ -63,12 +63,7 @@ forder :: Order     -- ^ Order of tree traversal
        -> Forest a  -- ^ List of trees to traverse
        -> [a]       -- ^ List of values in specified tree order
 
-forder _ _ _ [] = []
-forder order _ lv [tree] = torder order lv tree
-forder order sep lv (tree: rest) =
-  let currentTree = [torder order lv tree]  
-      restForest  = [forder order sep lv rest]
-  in intercalate (maybeToList sep) (currentTree ++ restForest)
+forder order sep lv forest = intercalate (maybeToList sep) (map (torder order lv) forest)
 
 
 maybeToList :: Maybe a -> [a]

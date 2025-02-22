@@ -106,10 +106,11 @@ checkSorted cmp (current, next) acc = cmp current next == LT && acc
 --
 tlookup :: Cmp a -> a -> Tree a -> Maybe a
 tlookup _ _ Leaf   = Nothing
-tlookup cmp v (Branch x left right) 
-  | cmp v x == EQ  = Just x
-  | cmp v x == GT  = tlookup cmp v right
-  | otherwise      = tlookup cmp v left
+tlookup cmp v (Branch x left right) =
+  case cmp v x of
+    EQ -> Just x
+    GT -> tlookup cmp v right
+    LT -> tlookup cmp v left
 
 -- | Inserts given value into given binary search tree
 -- preserving its BST properties with respect to given comparison
@@ -128,11 +129,11 @@ tlookup cmp v (Branch x left right)
 --
 tinsert :: Cmp a -> a -> Tree a -> Tree a
 tinsert _ v Leaf = Branch v Leaf Leaf
-tinsert cmp v (Branch x left right) 
-  | cmp v x == LT   = Branch x (tinsert cmp v left) right
-  | cmp v x == GT   = Branch x left (tinsert cmp v right)
-  | otherwise       = Branch v left right 
-
+tinsert cmp v (Branch x left right) = 
+  case cmp v x of
+    EQ -> Branch v left right 
+    GT -> Branch x left (tinsert cmp v right)
+    LT -> Branch x (tinsert cmp v left) right
 
 -- | Deletes given value from given binary search tree
 -- preserving its BST properties with respect to given comparison
@@ -149,15 +150,16 @@ tinsert cmp v (Branch x left right)
 --
 tdelete :: Cmp a -> a -> Tree a -> Tree a
 tdelete _ _ Leaf = Leaf
-tdelete cmp v (Branch x left right) 
-  | cmp v x == LT   = Branch x (tdelete cmp v left) right
-  | cmp v x == GT   = Branch x left (tdelete cmp v right)
-  | otherwise       = ndelete cmp (Branch v left right)
+tdelete cmp v (Branch x left right) =
+  case cmp v x of 
+    EQ -> ndelete cmp (Branch v left right)
+    GT -> Branch x left (tdelete cmp v right)
+    LT -> Branch x (tdelete cmp v left) right
 
 
 ndelete :: Cmp a -> Tree a -> Tree a
-ndelete _ Leaf                 =  error "deleting non-existent element"
-ndelete _ (Branch _ Leaf Leaf) =  Leaf         -- no children 
+ndelete _ Leaf                    =  error "deleting non-existent element"
+ndelete _ (Branch _ Leaf Leaf)    =  Leaf      -- no children 
 ndelete _ (Branch _ Leaf rBranch) = rBranch    -- only right child
 ndelete _ (Branch _ lBranch Leaf) = lBranch    -- only left child
 ndelete cmp (Branch _ lBranch rBranch) = Branch minVal lBranch (tdelete cmp minVal rBranch)  -- two children (find min on the right)
@@ -171,5 +173,5 @@ findMin (Branch v Leaf _)                  = v
 
 
 foldr :: (a -> b -> b) -> b -> [a] -> b
-foldr _ acc []   = acc           
+foldr _ acc []     = acc           
 foldr f acc (x:xs) = f x (foldr f acc xs) 
